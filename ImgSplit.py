@@ -141,8 +141,6 @@ class splitbase():
                     outline = outline + ' ' + obj['name'] + ' ' + str(obj['difficult'])
                     f_out.write(outline + '\n')
                 elif (half_iou > 0):
-                #elif (half_iou > self.thresh):
-                  ##  print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
                     inter_poly = shgeo.polygon.orient(inter_poly, sign=1)
                     out_poly = list(inter_poly.exterior.coords)[0: -1]
                     if len(out_poly) < 4:
@@ -154,7 +152,6 @@ class splitbase():
                         out_poly2.append(out_poly[i][1])
 
                     if (len(out_poly) == 5):
-                        #print('==========================')
                         out_poly2 = self.GetPoly4FromPoly5(out_poly2)
                     elif (len(out_poly) > 5):
                         """
@@ -178,8 +175,6 @@ class splitbase():
                         ## if the left part is too small, label as '2'
                         outline = outline + ' ' + obj['name'] + ' ' + '2'
                     f_out.write(outline + '\n')
-                #else:
-                 #   mask_poly.append(inter_poly)
         self.saveimagepatches(resizeimg, subimgname, left, up)
 
     def SplitSingle(self, name, rate, extent):
@@ -197,7 +192,6 @@ class splitbase():
         objects = util.parse_dota_poly2(fullname)
         for obj in objects:
             obj['poly'] = list(map(lambda x:rate*x, obj['poly']))
-            #obj['poly'] = list(map(lambda x: ([2 * y for y in x]), obj['poly']))
 
         if (rate != 1):
             resizeimg = cv2.resize(img, None, fx=rate, fy=rate, interpolation = cv2.INTER_CUBIC)
@@ -218,7 +212,6 @@ class splitbase():
                 right = min(left + self.subsize, weight - 1)
                 down = min(up + self.subsize, height - 1)
                 subimgname = outbasename + str(left) + '___' + str(up)
-                # self.f_sub.write(name + ' ' + subimgname + ' ' + str(left) + ' ' + str(up) + '\n')
                 self.savepatches(resizeimg, objects, subimgname, left, up, right, down)
                 if (up + self.subsize >= height):
                     break
@@ -238,8 +231,9 @@ class splitbase():
         for name in imagenames:
             self.SplitSingle(name, rate, self.ext)
 
+
 if __name__ == '__main__':
     # example usage of ImgSplit
-    split = splitbase(r'example',
-                       r'examplesplit')
+    split = splitbase(r'test_imgs/example',
+                       r'test_imgs/examplesplit')
     split.splitdata(1)

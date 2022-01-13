@@ -1,6 +1,5 @@
 # coding=gbk
 """
--------------
 This is the multi-process version
 """
 import os
@@ -14,7 +13,7 @@ import dota_utils as util
 import copy
 from multiprocessing import Pool
 from functools import partial
-import time
+
 
 def choose_best_pointorder_fit_another(poly1, poly2):
     """
@@ -34,6 +33,7 @@ def choose_best_pointorder_fit_another(poly1, poly2):
     distances = np.array([np.sum((coord - dst_coordinate)**2) for coord in combinate])
     sorted = distances.argsort()
     return combinate[sorted[0]]
+
 
 def cal_line_length(point1, point2):
     return math.sqrt( math.pow(point1[0] - point2[0], 2) + math.pow(point1[1] - point2[1], 2))
@@ -268,8 +268,6 @@ class splitbase():
             for name in imagenames:
                 self.SplitSingle(name, rate, self.ext)
         else:
-
-            # worker = partial(self.SplitSingle, rate=rate, extent=self.ext)
             worker = partial(split_single_warp, split_base=self, rate=rate, extent=self.ext)
             self.pool.map(worker, imagenames)
 
@@ -280,23 +278,11 @@ class splitbase():
 
     def __setstate__(self, state):
         self.__dict__.update(state)
-if __name__ == '__main__':
-    # example usage of ImgSplit
-    # start = time.clock()
-    # split = splitbase(r'/data/dj/dota/val',
-    #                    r'/data/dj/dota/val_1024_debugmulti-process_refactor') # time cost 19s
-    # # split.splitdata(1)
-    # # split.splitdata(2)
-    # split.splitdata(0.4)
-    #
-    # elapsed = (time.clock() - start)
-    # print("Time used:", elapse
-    #
-    #
-    # d)
 
-    split = splitbase(r'example',
-                      r'example_split',
+
+if __name__ == '__main__':
+    split = splitbase(r'test_imgs/example',
+                      r'test_imgs/example_split',
                       gap=200,        # 重叠区域
                       subsize=1024,   # 被分割成的小图片的size
                       num_process=8
