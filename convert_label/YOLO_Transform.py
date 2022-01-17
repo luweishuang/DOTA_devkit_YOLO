@@ -298,7 +298,6 @@ def delete(imgpath, txtpath):
 
 if __name__ == '__main__':
     ## an example
-
     dota2LongSideFormat('./DOTA_demo/images',
                         './DOTA_demo/labelTxt',
                         './DOTA_demo/yolo_labels',
