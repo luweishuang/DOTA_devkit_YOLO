@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import dota_utils as util
+import labelme_utils as util
 import os
 import numpy as np
 from PIL import Image
@@ -68,9 +68,9 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
     if os.path.exists(dstpath):
         shutil.rmtree(dstpath)  # delete output folder
     os.makedirs(dstpath)  # make new output folder
-    filelist = util.GetFileFromThisRootDir(txtpath)  # fileist=['/.../P0005.txt', ..., /.../P000?.txt]
+    filelist = util.GetFileFromThisRootDir(txtpath, "json")  # fileist=['/.../P0005.txt', ..., /.../P000?.txt]
     for fullname in filelist:  # fullname='/.../P000?.txt'
-        objects = util.parse_dota_poly(fullname)
+        objects = util.parse_labelme_poly(fullname)
         '''
         objects =
         [{'name': 'ship', 
@@ -81,8 +81,8 @@ def dota2LongSideFormat(imgpath, txtpath, dstpath, extractclassname):
           ...
         ]
         '''
-        name = os.path.splitext(os.path.basename(fullname))[0]  # name='P000?'
-        img_fullname = os.path.join(imgpath, name + '.png')  # img_fullname='/.../P000?.png'
+        name = os.path.splitext(os.path.basename(fullname))[0]
+        img_fullname = os.path.join(imgpath, name + '.jpg')
         img = Image.open(img_fullname)
         img_w, img_h = img.size
         # print img_w,img_h
@@ -206,8 +206,8 @@ def cvminAreaRect2longsideformat(x_c, y_c, width, height, theta):
     if (theta_longside < -180 or theta_longside >= 0):
         print('旋转框转换表示形式时出现问题:θ超出长边表示法的范围：[-180,0);[%.16f, %.16f, %.16f, %.16f, %.1f]' % (x_c, y_c, longside, shortside, theta_longside))
         return False
-
     return x_c, y_c, longside, shortside, theta_longside
+
 
 def drawLongsideFormatimg(imgpath, txtpath, dstpath, extractclassname, thickness=2):
     """
@@ -225,12 +225,9 @@ def drawLongsideFormatimg(imgpath, txtpath, dstpath, extractclassname, thickness
     filelist = util.GetFileFromThisRootDir(txtpath)  # fileist=['/.../P0005.txt', ..., /.../P000?.txt]
     for fullname in filelist:  # fullname='/.../P000?.txt'
         objects = util.parse_longsideformat(fullname)
-        '''
-        objects[i] = [classid, x_c_normalized, y_c_normalized, longside_normalized, shortside_normalized, theta]
-        '''
         name = os.path.splitext(os.path.basename(fullname))[0]  # name='P000?'
-        img_fullname = os.path.join(imgpath, name + '.png')  # img_fullname='/.../P000?.png'
-        img_savename = os.path.join(dstpath, name + '_.png')  # img_fullname='/.../_P000?.png'
+        img_fullname = os.path.join(imgpath, name + '.jpg')
+        img_savename = os.path.join(dstpath, name + '_.jpg')
         img = Image.open(img_fullname)  # 图像被打开但未被读取
         img_w, img_h = img.size
         img = cv2.imread(img_fullname)  # 读取图像像素
@@ -300,12 +297,12 @@ def delete(imgpath, txtpath):
 
 if __name__ == '__main__':
     ## an example
-    dota2LongSideFormat('../test_imgs/DOTA_demo/images',
-                        '../test_imgs/DOTA_demo/labelTxt',
-                        '../test_imgs/DOTA_demo/yolo_labels',
-                        util.classnames_v1_5)
+    dota2LongSideFormat('../datasets/powertower/val/images',
+                        '../datasets/powertower/val/jsons',
+                        '../datasets/powertower/val/yolo_labels',
+                        util.classnames_powertower)
 
-    drawLongsideFormatimg(imgpath='../test_imgs/DOTA_demo/images',
-                          txtpath='../test_imgs/DOTA_demo/yolo_labels',
-                          dstpath='../test_imgs/DOTA_demo/draw_longside_img',
-                          extractclassname=util.classnames_v1_5)
+    drawLongsideFormatimg(imgpath='../datasets/powertower/val/images',
+                          txtpath='../datasets/powertower/val/yolo_labels',
+                          dstpath='../datasets/powertower/val/draw_longside_img',
+                          extractclassname=util.classnames_powertower)

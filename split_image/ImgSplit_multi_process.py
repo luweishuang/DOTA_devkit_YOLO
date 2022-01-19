@@ -282,8 +282,8 @@ class splitbase():
 
 if __name__ == '__main__':
     # 'datasets/DOTA/train'     'test_imgs/example'
-    split = splitbase(r'../datasets/DOTA/train',
-                      r'../datasets/DOTA/train_split',
+    split = splitbase(r'../datasets/DOTA/val',
+                      r'../datasets/DOTA/val_split',
                       gap=500,        # 重叠区域
                       subsize=1024,   # 被分割成的小图片的size
                       num_process=8
