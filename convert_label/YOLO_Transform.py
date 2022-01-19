@@ -300,12 +300,12 @@ def delete(imgpath, txtpath):
 
 if __name__ == '__main__':
     ## an example
-    dota2LongSideFormat('../test_imgs/DOTA_demo/images',
-                        '../test_imgs/DOTA_demo/labelTxt',
-                        '../test_imgs/DOTA_demo/yolo_labels',
+    dota2LongSideFormat('../datasets/DOTA/train_split/images',
+                        '../datasets/DOTA/train_split/labelTxt',
+                        '../datasets/DOTA/train_split/yolo_labels',
                         util.classnames_v1_5)
 
-    drawLongsideFormatimg(imgpath='../test_imgs/DOTA_demo/images',
-                          txtpath='../test_imgs/DOTA_demo/yolo_labels',
-                          dstpath='../test_imgs/DOTA_demo/draw_longside_img',
+    drawLongsideFormatimg(imgpath='../datasets/DOTA/train_split/images',
+                          txtpath='../datasets/DOTA/train_split/yolo_labels',
+                          dstpath='../datasets/DOTA/train_split/draw_longside_img',
                           extractclassname=util.classnames_v1_5)
